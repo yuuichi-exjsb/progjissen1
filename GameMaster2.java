@@ -16,8 +16,8 @@ public class GameMaster2 extends Frame implements ActionListener{
   int eat;
   int bite;
   int ans_cnt = 0;
-  int mode; //0:ゲーム中、-1:ゲーム終了,
-  MyCanvas mc;
+  int mode; //0:ゲーム中、-1:ゲーム終了
+
 
   public static void main(String [] args) {
     GameMaster2 scl = new GameMaster2();
@@ -32,8 +32,6 @@ public class GameMaster2 extends Frame implements ActionListener{
   GameMaster2() {
     super("NUMERON");
     this.setSize(600, 500); 
-    mc = new MyCanvas(this); // mc のオブジェクト（実体）を作成
-
     // それぞれのカードにTextAreaを配置する
     // カードに名称をつけて登録する
     txt= new TextArea("", 10, 40, TextArea.SCROLLBARS_VERTICAL_ONLY);
@@ -81,7 +79,6 @@ public class GameMaster2 extends Frame implements ActionListener{
    add(p_south,  BorderLayout.SOUTH); 
    add(txt, BorderLayout.WEST);
    add(txt2,BorderLayout.CENTER);
-   add(mc,BorderLayout.NORTH);
 
     // カードの先頭ページを表示する
     //card1.first(p_center);
@@ -110,7 +107,21 @@ public class GameMaster2 extends Frame implements ActionListener{
        txt.setText("");
     }
     else if(btn == btreset){
-
+      //正解の数字配列をリセット
+      //ans（解答回数）を変更
+      CPUnumber();
+      int stt3 = txt.getSelectionStart();
+      int end3 = txt.getSelectionEnd();
+      txt.setText("");
+      txt2.setText("");
+      txt.append("ゲームをリセットしました\n");
+      ans_cnt = 0;
+      ss = "";
+      s_num = "";
+      txt.requestFocusInWindow(); // テキストエリアにフォーカスを与える
+      txt2.requestFocusInWindow(); // テキストエリアにフォーカスを与える
+      //System.out.println(Arrays.toString(ans));
+      
     }
     else if(btn == btclr){
         ss = "";
@@ -182,7 +193,7 @@ public class GameMaster2 extends Frame implements ActionListener{
       }
         System.out.println(eat+" eat  "+bite+" bite");
         if(eat == 3){
-          JOptionPane.showMessageDialog(null, "3 eat あなたの勝利です！！");
+          JOptionPane.showMessageDialog(null, "3 eat あなたの勝利です！！\nまた遊ぶ場合はリセットを押してください");
         }
 
         ope_txt2(user_answer,eat,bite);
@@ -217,43 +228,4 @@ public class GameMaster2 extends Frame implements ActionListener{
 
       return ans_flag;
     }
-}
-
-class MyCanvas extends Canvas{
-  // ■ フィールド変数
-  int x, y;   // mouse pointer position
-  int px, py; // preliminary position
-  int ow, oh; // width and height of the object
-  int tmpX,tmpY;
-  int mode_shape,mode_color;   // drawing mode associated as below
-  Image img = null;   // 仮の画用紙
-  Graphics gc = null; // 仮の画用紙用のペン
-  Dimension d; // キャンバスの大きさ取得用
-
-  // ■ コンストラクタ
-  MyCanvas(GameMaster2 obj){
-    mode_shape=0;                       // initial value 
-    mode_color=1;
-    this.setSize(600,200);        // キャンバスのサイズを指定
-  }
-
-  // ■ メソッド（オーバーライド）
-  // フレームに何らかの更新が行われた時の処理
-  public void update(Graphics g) {
-    paint(g); // 下記の paint を呼び出す
-  }
-
-  // ■ メソッド（オーバーライド）
-  public void paint(Graphics g) {
-    d = getSize();   // キャンバスのサイズを取得
-    if (img == null) // もし仮の画用紙の実体がまだ存在しなければ
-      img = createImage(d.width, d.height); // 作成
-    if (gc == null)  // もし仮の画用紙用のペン (GC) がまだ存在しなければ
-      gc = img.getGraphics(); 
-
-    
-    g.drawImage(img, 0, 0, this); // 仮の画用紙の内容を MyCanvas に描画
-  }
-
-  
 }
