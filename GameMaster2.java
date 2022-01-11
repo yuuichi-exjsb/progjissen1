@@ -216,7 +216,7 @@ public class GameMaster2 extends Frame implements ActionListener{
 
       for(int i=0;i<user_answer_chk.length;i++){
         user_answer_chk[i] = Integer.parseInt(user_answer_chk_str[i]);
-        for(int j=i-1;j>0;j--){
+        for(int j=i-1;j>=0;j--){
           if(user_answer_chk[i] == user_answer_chk[j]){
             ans_flag = true;
             break;
