@@ -2,7 +2,12 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Arrays;
 import javax.swing.JOptionPane;
+//import javax.swing.Jlabel;
 import javax.swing.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 
 public class GameMaster2 extends Frame implements ActionListener{
   // ■ フィールド変数
@@ -17,8 +22,7 @@ public class GameMaster2 extends Frame implements ActionListener{
   int bite;
   int ans_cnt = 0;
   int mode; //0:ゲーム中、-1:ゲーム終了
-
-
+  MyCanvas mc;
   public static void main(String [] args) {
     GameMaster2 scl = new GameMaster2();
     //GameMaster2 scl1 = new GameMaster2();
@@ -36,6 +40,9 @@ public class GameMaster2 extends Frame implements ActionListener{
     // カードに名称をつけて登録する
     txt= new TextArea("", 10, 40, TextArea.SCROLLBARS_VERTICAL_ONLY);
     txt2 = new TextArea("",10,40,TextArea.SCROLLBARS_VERTICAL_ONLY);
+    mc = new MyCanvas();
+    mc.setSize(100, 150);
+    mc.setBackground(Color.white);
     add(txt);                   // テキストエリアの設定
     add(txt2);
 
@@ -76,9 +83,11 @@ public class GameMaster2 extends Frame implements ActionListener{
 
     // アプレット全体をBorderLayoutにしp_centerとp_southを登録する
     setLayout(new BorderLayout());
+  add(mc,BorderLayout.NORTH);
    add(p_south,  BorderLayout.SOUTH); 
    add(txt, BorderLayout.WEST);
    add(txt2,BorderLayout.CENTER);
+   
 
     // カードの先頭ページを表示する
     //card1.first(p_center);
@@ -227,5 +236,20 @@ public class GameMaster2 extends Frame implements ActionListener{
       if(user_answer_chk.length != 3)ans_flag = true;
 
       return ans_flag;
+    }
+
+    class MyCanvas extends Canvas {
+      //Image img = this.getToolkit().getImage("./src/img/nume_attachan1.png");
+
+    public void paint(Graphics g) {
+        Dimension d = getSize();                  // キャンバスサイズ取得 
+       try {
+            BufferedImage image = ImageIO.read(new File("./img/nume_attachan1.png"));
+            g.drawImage(image, 0,0,100*600/100,100*338/150, null);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     }
 }
